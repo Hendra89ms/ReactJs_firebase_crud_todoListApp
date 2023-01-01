@@ -4,6 +4,7 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import SpinnerPage from '../spinner/Spinner'
 import Todo_Services from '../../service/todo_services'
+import { Navbar } from '../navbar'
 
 export default function ListTodo({ getTodoId }) {
     const [state, setState] = useState({
@@ -48,66 +49,69 @@ export default function ListTodo({ getTodoId }) {
         getAllDocs()
     }, [])
 
-
-
     return (
         <>
+
+
+
             {
                 state.loading ? <SpinnerPage /> : (
+                    <div>
+                        <Navbar />
 
-                    <div className='flex flex-col mb-20 max-w-[700px] h-full m-auto '>
-                        <h2 className='text-lg text-center'><span className='text-orange-500'>Todo Lists</span> App</h2>
-                        <hr />
+                        <div className='flex flex-col mb-20 sm:w-[700px] h-full mx-auto '>
 
-                        <div className='flex flex-wrap justify-center items-center mt-10 gap-4'>
+                            <div className='flex flex-wrap justify-center items-center mt-14 gap-4'>
 
-                            {
-                                state.todos.map((todo) => {
-                                    return (
-                                        <div key={todo.id} className='w-[300px] min-h-[200px] border-slate-400 border-[1px] rounded-md px-3 py-4 bg-gray-400 text-white '>
-                                            <div className='flex gap-4 justify-end '>
-                                                <Link to={`/editTodo/${todo.id}`}>
+                                {
+                                    state.todos.map((todo) => {
+                                        return (
+                                            <div key={todo.id} className='w-[300px] min-h-[200px] border-slate-400 border-[1px] rounded-md px-3 py-4 bg-gray-400 text-white '>
+                                                <div className='flex gap-4 justify-end '>
+                                                    <Link to={`/editTodo/${todo.id}`}>
+                                                        <IconButton
+                                                            icon={<EditIcon color='blue.400' />}
+                                                            onClick={() => getTodoId(todo.id)}
+                                                        />
+                                                    </Link>
                                                     <IconButton
-                                                        icon={<EditIcon color='blue.400' />}
-                                                        onClick={() => getTodoId(todo.id)}
+                                                        icon={<DeleteIcon color='red.400' />}
+                                                        onClick={() => { deleteHandler(todo.id) }}
                                                     />
-                                                </Link>
-                                                <IconButton
-                                                    icon={<DeleteIcon color='red.400' />}
-                                                    onClick={() => { deleteHandler(todo.id) }}
-                                                />
-                                            </div>
-
-                                            <h1 className='capitalize mt-4'>{todo.todo}</h1>
-                                            <hr className='bg-orange-500 ' />
-                                            <p>{todo.ket}</p>
-
-
-                                            <div className='flex gap-2 mt-4 justify-end'>
-                                                <p>Dibuat pada </p>
-                                                <div className='flex gap-3'>
-                                                    <h3>{todo.time},</h3>
-                                                    <p>{todo.date}</p>
                                                 </div>
+
+                                                <h1 className='capitalize mt-4'>{todo.todo}</h1>
+                                                <hr className='bg-orange-500 ' />
+                                                <p>{todo.ket}</p>
+
+
+                                                <div className='flex gap-2 mt-4 justify-end'>
+                                                    <p>Dibuat pada </p>
+                                                    <div className='flex gap-3'>
+                                                        <h3>{todo.time},</h3>
+                                                        <p>{todo.date}</p>
+                                                    </div>
+                                                </div>
+
                                             </div>
+                                        )
+                                    })
+                                }
 
-                                        </div>
-                                    )
-                                })
-                            }
 
+                            </div>
+
+
+                            <Link to={'/addTodo'} className='flex justify-center items-center'>
+                                <button
+                                    className='w-[80px] h-[80px] rounded-full bg-orange-500 text-white text-[40px] fixed bottom-[100px] left-[250px] border-0 outline-none sm:bottom-[10px] sm:right-0 sm:left-[600px] '
+                                >
+                                    +</button>
+                            </Link>
 
                         </div>
-
-
-                        <Link to={'/addTodo'} className='flex justify-center items-center'>
-                            <button
-                                className='w-[80px] h-[80px] rounded-full bg-orange-500 text-white text-[40px] fixed bottom-[100px] left-[250px] border-0 outline-none sm:bottom-[10px] sm:right-0 sm:left-[600px] '
-                            >
-                                +</button>
-                        </Link>
-
                     </div>
+
 
                 )
             }
