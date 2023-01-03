@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { auth } from '../../firebase_config';
 
 export default function LoginPage({ setLogin }) {
+
+    const handleGoogleLogin = () => {
+        const auth = getAuth()
+        const provider = new GoogleAuthProvider()
+        signInWithPopup(auth, provider)
+            .then(res => {
+                console.log(res.user)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    useEffect(() => {
+        console.log(auth)
+    }, [])
 
     return (
         <>
@@ -39,8 +57,9 @@ export default function LoginPage({ setLogin }) {
 
 
                             <button
-                                type='submit'
-                                className='bg-orange-500 text-white rounded-md h-[40px] hover:bg-orange-400 duration-300  '
+                                onClick={handleGoogleLogin}
+                                type='button'
+                                className='bg-blue-500 text-white rounded-md h-[40px] hover:bg-blue-400 duration-300  '
                             >Gunakan Google</button>
                         </div>
 

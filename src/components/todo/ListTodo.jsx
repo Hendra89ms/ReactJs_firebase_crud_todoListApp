@@ -104,7 +104,7 @@ export default function ListTodo({ getTodoId }) {
 
                             <Link to={'/addTodo'} className='flex justify-center items-center'>
                                 <button
-                                    className='w-[80px] h-[80px] rounded-full bg-orange-500 text-white text-[40px] fixed bottom-[100px] left-[250px] border-0 outline-none sm:bottom-[10px] sm:right-0 sm:left-[600px] '
+                                    className='w-[80px] h-[80px] rounded-full bg-orange-500 text-white text-[40px] fixed bottom-[100px] left-[250px] border-0 outline-none sm:bottom-[40px] sm:right-0 sm:left-[800px] '
                                 >
                                     +</button>
                             </Link>
