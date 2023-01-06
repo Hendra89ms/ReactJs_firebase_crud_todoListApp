@@ -1,19 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth'
 
-export default function RegisterPage() {
+export default function RegisterPage({ setIsLogin }) {
 
+    const navigate = useNavigate()
+
+    const handleGoogleRegister = () => {
+        const auth = getAuth()
+        const provider = new GoogleAuthProvider()
+
+        signInWithPopup(auth, provider)
+            .then(res => {
+                console.info(res.user)
+                setIsLogin(true)
+                navigate('/', { replace: true })
+            })
+            .catch(err => {
+                console.log(err)
+                navigate('/register', { replace: false })
+            })
+    }
 
     const submitForm = (e) => {
         e.preventDefault()
 
-        let username = e.target.username.value;
+        let email = e.target.email.value;
         let password = e.target.password.value;
         let ulangi_password = e.target.ulangi_password.value;
 
-        console.log({ username, password, ulangi_password })
-
-        if (!username || !password || !ulangi_password) {
+        if (!email || !password || !ulangi_password) {
             return alert('Anda harus menginput data dengan benar!!!')
         }
 
@@ -21,7 +37,21 @@ export default function RegisterPage() {
             return alert('Password harus sama');
         }
 
+        if (password.length < 6) {
+            return alert("password harus lebih dari 6 karakter")
+        }
 
+
+        const auth = getAuth()
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((result) => {
+                localStorage.setItem('user', JSON.stringify(result.user))
+                navigate('/', { replace: true })
+            })
+            .catch((err) => {
+                console.error(err)
+                navigate("/register", { replace: false })
+            })
 
     }
 
@@ -41,9 +71,9 @@ export default function RegisterPage() {
                     >
                         <div className='flex flex-col gap-2'>
                             <input
-                                id='username'
-                                type="text"
-                                className='border-[1px] border-slate-400 outline-orange-300 p-2 rounded-md ' placeholder='Username' />
+                                id='email'
+                                type="email"
+                                className='border-[1px] border-slate-400 outline-orange-300 p-2 rounded-md ' placeholder='email' />
 
                             <input
                                 id='password'
@@ -66,8 +96,9 @@ export default function RegisterPage() {
 
 
                             <button
-                                type='submit'
-                                className='bg-orange-500 text-white rounded-md h-[40px] hover:bg-orange-400 duration-300  '
+                                type='button'
+                                onClick={handleGoogleRegister}
+                                className='bg-blue-500 text-white rounded-md h-[40px] hover:bg-blue-400 duration-300  '
                             >Gunakan Google</button>
                         </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons'
 
-export default function Navbar() {
+export default function Navbar({ username }) {
 
     return (
         <>
@@ -12,7 +12,7 @@ export default function Navbar() {
                     </div>
 
                     <div className='flex items-center gap-1'>
-                        <h1>Hendra Ms</h1>
+                        <h1>{username}</h1>
                         <div className='bg-slate-400 w-[35px] h-[35px] rounded-full flex justify-center items-center'>
                             <p className='text-white'>HM</p>
                         </div>

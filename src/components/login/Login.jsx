@@ -1,25 +1,54 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { auth } from '../../firebase_config';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, signInWithPopup, setPersistence, inMemoryPersistence, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth'
 
-export default function LoginPage({ setLogin }) {
+
+export default function LoginPage({ setIsLogin }) {
+
+    const navigate = useNavigate()
 
     const handleGoogleLogin = () => {
         const auth = getAuth()
         const provider = new GoogleAuthProvider()
+
         signInWithPopup(auth, provider)
             .then(res => {
                 console.log(res.user)
+                localStorage.setItem('user', JSON.stringify(res.user))
+                setIsLogin(true)
+                navigate('/', { replace: true })
             })
             .catch(err => {
                 console.log(err)
             })
+
     }
 
-    useEffect(() => {
-        console.log(auth)
-    }, [])
+    const handleEmailPassword = (e) => {
+        e.preventDefault()
+
+        let email = e.target.email.value;
+        let password = e.target.password.value;
+
+        if (!email || !password) {
+            return alert('Tolong check email atau password!')
+        }
+
+        if (password.length < 6) {
+            return alert("Password Kamu harus lebih dari 6 character!")
+        }
+
+        const auth = getAuth()
+        signInWithEmailAndPassword(auth, email, password)
+            .then((result) => {
+                localStorage.setItem('user', JSON.stringify(result.user))
+                setGoogleLogin(true)
+                navigate("/")
+            })
+            .catch((err) => {
+                alert("Terjadi kesalahan")
+            })
+    }
 
     return (
         <>
@@ -31,15 +60,15 @@ export default function LoginPage({ setLogin }) {
                     </div>
 
                     <form
-                        onSubmit={() => { setLogin(true) }}
+                        onSubmit={handleEmailPassword}
                         className='flex flex-col gap-4'
                         autoComplete='off'
                     >
                         <div className='flex flex-col gap-2'>
                             <input
-                                id='username'
-                                type="text"
-                                className='border-[1px] border-slate-400 outline-orange-300 p-2 rounded-md ' placeholder='Username' />
+                                id='email'
+                                type="email"
+                                className='border-[1px] border-slate-400 outline-orange-300 p-2 rounded-md ' placeholder='Email' />
 
                             <input
                                 id='password'

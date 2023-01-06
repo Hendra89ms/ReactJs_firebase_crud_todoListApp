@@ -13,6 +13,8 @@ export default function ListTodo({ getTodoId }) {
         error: ''
     })
 
+    const [user, setUser] = useState()
+
     // mengget semua data
     const getAllDocs = async () => {
 
@@ -47,6 +49,7 @@ export default function ListTodo({ getTodoId }) {
 
     useEffect(() => {
         getAllDocs()
+        setUser(JSON.parse(localStorage.getItem('user')))
     }, [])
 
     return (
@@ -57,7 +60,7 @@ export default function ListTodo({ getTodoId }) {
             {
                 state.loading ? <SpinnerPage /> : (
                     <div>
-                        <Navbar />
+                        <Navbar username={user?.email} />
 
                         <div className='flex flex-col mb-20 sm:w-[700px] h-full mx-auto '>
 
