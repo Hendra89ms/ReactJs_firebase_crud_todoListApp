@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, signInWithPopup, setPersistence, inMemoryPersistence, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from 'firebase/auth'
 
 
 export default function LoginPage({ setIsLogin }) {
@@ -13,12 +13,13 @@ export default function LoginPage({ setIsLogin }) {
 
         signInWithPopup(auth, provider)
             .then(res => {
-                console.log(res.user)
                 localStorage.setItem('user', JSON.stringify(res.user))
                 setIsLogin(true)
                 navigate('/', { replace: true })
             })
             .catch(err => {
+                setIsLogin(false)
+                navigate('/', { replace: false })
                 console.log(err)
             })
 
@@ -42,11 +43,14 @@ export default function LoginPage({ setIsLogin }) {
         signInWithEmailAndPassword(auth, email, password)
             .then((result) => {
                 localStorage.setItem('user', JSON.stringify(result.user))
-                setGoogleLogin(true)
-                navigate("/")
+                setIsLogin(true)
+                navigate("/", { replace: true })
             })
             .catch((err) => {
                 alert("Terjadi kesalahan")
+                navigate("/", { replace: false })
+                setIsLogin(false)
+                console.log(err)
             })
     }
 

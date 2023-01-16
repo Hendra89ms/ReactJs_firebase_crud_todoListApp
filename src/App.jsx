@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom'
-import { AddTodo, ListTodo, EditTodo, LoginPage, RegisterPage } from './components'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { AddTodo, ListTodo, EditTodo, LoginPage, RegisterPage, Profile } from './components'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default function App() {
@@ -15,25 +15,16 @@ export default function App() {
 
   useEffect(() => {
     const auth = getAuth()
-    onAuthStateChanged(auth, (result) => {
-      console.log(result.email)
-      if (result) {
-        setIsLogin(true)
-        return
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        return setIsLogin(true)
       }
+      console.log('User Belum Login...')
       setIsLogin(false)
     })
   }, [])
 
-  if (isLogin) {
-    return (
-      <Routes>
-        <Route path='/' element={<ListTodo getTodoId={getTodoHandler} />} />
-        <Route path='/addTodo' element={<AddTodo />} />
-        <Route path={`/editTodo/:id`} element={<EditTodo id={todoId} setTodoId={setTodoId} />} />
-      </Routes>
-    )
-  }
+
 
   // get token
   const getFCMToken = () => {
@@ -51,12 +42,25 @@ export default function App() {
     });
   }
 
+  if (isLogin) {
+    return (
+      <Routes>
+        <Route path='*' element={<ListTodo getTodoId={getTodoHandler} setLogin={setIsLogin} />} />
+        <Route path='/dashboard' element={<ListTodo getTodoId={getTodoHandler} setLogin={setIsLogin} />} />
+        <Route path='/addTodo' element={<AddTodo />} />
+        <Route path={`/editTodo/:id`} element={<EditTodo id={todoId} setTodoId={setTodoId} />} />
+        <Route path='/profile' element={<Profile setIsLogin={setIsLogin} />} />
+      </Routes>
+    )
+  }
 
 
   return (
     <>
       <Routes>
-        <Route path='/' element={<LoginPage setIsLogin={setIsLogin} />} />
+        {/* <Route path='/' element={<Navigate to={'/login'} />} /> */}
+        <Route path='*' element={<LoginPage setIsLogin={setIsLogin} />} />
+        <Route path='/login' element={<LoginPage setIsLogin={setIsLogin} />} />
         <Route path='/register' element={<RegisterPage setIsLogin={setIsLogin} />} />
       </Routes>
     </>

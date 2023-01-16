@@ -12,7 +12,6 @@ export default function RegisterPage({ setIsLogin }) {
 
         signInWithPopup(auth, provider)
             .then(res => {
-                console.info(res.user)
                 setIsLogin(true)
                 navigate('/', { replace: true })
             })
