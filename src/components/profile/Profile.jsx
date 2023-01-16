@@ -10,7 +10,7 @@ export default function Profile({ setIsLogin }) {
     const [state, setState] = useState({
         loading: false,
         error: '',
-        jumlahTodo: ''
+        jumlahTodo: ""
     })
     const [user, setUser] = useState()
     const navigate = useNavigate()
@@ -40,7 +40,6 @@ export default function Profile({ setIsLogin }) {
 
     }
 
-
     const handleLogOut = () => {
         const auth = getAuth()
         signOut(auth)
@@ -55,9 +54,30 @@ export default function Profile({ setIsLogin }) {
             })
     }
 
+    // jumlah semua data
+    const getTotalData = async () => {
+        try {
+            setState({ ...state, loading: true })
+
+            // respon dari services
+            const resp = await Todo_Services.totalData()
+
+            const totalTodos = resp.data().count
+
+            setState({ ...state, loading: false, jumlahTodo: totalTodos })
+
+        } catch (error) {
+            setState({
+                ...state,
+                error: error.message
+            })
+        }
+    }
+
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('user')))
-        console.log(getAllDocs())
+        getAllDocs()
+        getTotalData()
     }, [])
 
     return (
@@ -72,7 +92,8 @@ export default function Profile({ setIsLogin }) {
                             <div className='flex flex-col justify-center items-center'>
                                 <Avatar name={user?.email} src={user?.photoURL} size={'2xl'} />
                                 <p className='text-xl'>{user?.email}</p>
-                                <p>Jumlah Kegiatan : <span className='font-bold'>10</span></p>
+
+                                <p>Jumlah Kegiatan : <span className='font-bold'>{state.jumlahTodo.length}</span></p>
                             </div>
 
                             <button type='button' onClick={handleLogOut} className='bg-black text-white w-[200px] sm:w-[350px] p-2 hover:bg-slate-800 duration-300 rounded-md '>Logout</button>

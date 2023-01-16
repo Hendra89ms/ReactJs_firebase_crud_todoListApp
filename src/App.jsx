@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { AddTodo, ListTodo, EditTodo, LoginPage, RegisterPage, Profile } from './components'
+import { AddTodo, ListTodo, EditTodo, LoginPage, RegisterPage, Profile, SpinnerPage } from './components'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default function App() {
   const [todoId, setTodoId] = useState('')
   let [isLogin, setIsLogin] = useState(false)
-
 
   const getTodoHandler = (id) => {
 
@@ -24,23 +23,6 @@ export default function App() {
     })
   }, [])
 
-
-
-  // get token
-  const getFCMToken = () => {
-    getToken(messaging, { vapidKey: import.meta.env.VITE_VAPID_KEY }).then((currentToken) => {
-      if (currentToken) {
-        console.info(currentToken)
-      } else {
-        // Show permission request UI
-        console.log('No registration token available. Request permission to generate one.');
-        // ...
-      }
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
-      // ...
-    });
-  }
 
   if (isLogin) {
     return (
