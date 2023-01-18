@@ -16,12 +16,6 @@ export default function ListTodo({ getTodoId, setLogin }) {
 
     const [user, setUser] = useState()
 
-    const userAuth = JSON.parse(localStorage.getItem('user'))
-
-    useEffect(() => {
-        userAuth.uid
-    }, [])
-
     // mengget semua data
     const getAllDocs = async () => {
 
@@ -54,10 +48,13 @@ export default function ListTodo({ getTodoId, setLogin }) {
         getAllDocs()
     }
 
+    const userAuth = JSON.parse(localStorage.getItem('user'))
+
+
     useEffect(() => {
         getAllDocs()
         setUser(JSON.parse(localStorage.getItem('user')))
-
+        userAuth.uid
     }, [])
 
     return (

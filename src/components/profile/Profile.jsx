@@ -30,11 +30,6 @@ export default function Profile({ setIsLogin }) {
             })
     }
 
-    const userID = JSON.parse(localStorage.getItem('user'))
-
-    useEffect(() => {
-        userID.uid
-    }, [])
 
     // jumlah semua data
     const getTotalData = async () => {
@@ -55,10 +50,11 @@ export default function Profile({ setIsLogin }) {
             })
         }
     }
+    const userID = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem('user')))
-
+        userID.uid
         getTotalData()
     }, [])
 
