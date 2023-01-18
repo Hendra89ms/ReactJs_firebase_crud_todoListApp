@@ -54,6 +54,7 @@ export default function LoginPage({ setIsLogin }) {
             })
     }
 
+
     return (
         <>
             <div className='w-screen h-screen flex justify-center items-center bg-slate-100 sm:text-xs '>

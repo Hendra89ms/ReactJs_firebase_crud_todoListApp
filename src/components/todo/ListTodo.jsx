@@ -16,6 +16,12 @@ export default function ListTodo({ getTodoId, setLogin }) {
 
     const [user, setUser] = useState()
 
+    const userAuth = JSON.parse(localStorage.getItem('user'))
+
+    useEffect(() => {
+        userAuth.uid
+    }, [])
+
     // mengget semua data
     const getAllDocs = async () => {
 
@@ -23,7 +29,7 @@ export default function ListTodo({ getTodoId, setLogin }) {
             setState({ ...state, loading: true })
 
             // respon dari services
-            const resp = await Todo_Services.getAllTodo()
+            const resp = await Todo_Services.dataUser(userAuth.uid)
 
             // mapping mereturn object dari firebase
             const todos = resp.docs.map((item) => {
@@ -51,6 +57,7 @@ export default function ListTodo({ getTodoId, setLogin }) {
     useEffect(() => {
         getAllDocs()
         setUser(JSON.parse(localStorage.getItem('user')))
+
     }, [])
 
     return (

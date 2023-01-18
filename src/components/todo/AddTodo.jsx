@@ -3,6 +3,7 @@ import { Button, Input, IconButton, Textarea } from '@chakra-ui/react'
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import Todo_Services from '../../service/todo_services'
+import { useEffect } from 'react'
 
 export default function AddTodo() {
 
@@ -24,9 +25,12 @@ export default function AddTodo() {
         });
     }
 
+    const user = JSON.parse(localStorage.getItem('user'))
+
     // state
     const [state, setState] = useState({
         todos: {
+            userId: user.uid,
             todo: "",
             ket: "",
             date: getToday(),
@@ -35,6 +39,10 @@ export default function AddTodo() {
         loading: false,
         error: ""
     })
+
+    useEffect(() => {
+        state.todos.userId
+    }, [state])
 
     // handle perubahan inputan
     const handelChange = (e) => {

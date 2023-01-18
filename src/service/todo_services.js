@@ -1,5 +1,5 @@
 import { db } from '../firebase_config'
-import { getDoc, getDocs, addDoc, updateDoc, deleteDoc, collection, doc, getCountFromServer } from 'firebase/firestore'
+import { getDoc, getDocs, addDoc, updateDoc, deleteDoc, collection, doc, where, query, getCountFromServer } from 'firebase/firestore'
 
 let todoCollectionRef = collection(db, 'todo')
 
@@ -14,8 +14,8 @@ export default class Todo_Services {
     }
 
     static getTodo = (id) => {
-        const bookDoc = doc(db, "todo", id)
-        return getDoc(bookDoc)
+        const todoDoc = doc(db, "todo", id)
+        return getDoc(todoDoc)
     }
 
     static updateTodo = (id, updateData) => {
@@ -28,8 +28,14 @@ export default class Todo_Services {
         return deleteDoc(todoDoc)
     }
 
-    static totalData = () => {
-        return getCountFromServer(todoCollectionRef)
+    static totalData = (userId) => {
+        const q = query(todoCollectionRef, where("userId", "==", userId));
+        return getCountFromServer(q)
+    }
+
+    static dataUser = (userId) => {
+        const q = query(todoCollectionRef, where("userId", "==", userId));
+        return getDocs(q)
     }
 
 
