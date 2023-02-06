@@ -101,6 +101,8 @@ export default function EditTodo({ id, setTodoId }) {
     }
 
     useEffect(() => {
+        document.title = 'Edit your todo'
+
         if (id !== undefined && id !== '') {
             editHandler()
         }

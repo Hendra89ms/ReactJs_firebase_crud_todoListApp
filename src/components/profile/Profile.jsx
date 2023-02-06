@@ -53,6 +53,8 @@ export default function Profile({ setIsLogin }) {
     const userID = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
+        document.title = 'Profile'
+
         setUser(JSON.parse(localStorage.getItem('user')))
         userID.uid
         getTotalData()

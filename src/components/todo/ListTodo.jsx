@@ -52,6 +52,8 @@ export default function ListTodo({ getTodoId, setLogin }) {
 
 
     useEffect(() => {
+        document.title = 'Todo List App'
+
         getAllDocs()
         setUser(JSON.parse(localStorage.getItem('user')))
         userAuth.uid

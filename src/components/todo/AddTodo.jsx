@@ -41,6 +41,8 @@ export default function AddTodo() {
     })
 
     useEffect(() => {
+        document.title = 'Add your Todo'
+
         state.todos.userId
     }, [state])
 
